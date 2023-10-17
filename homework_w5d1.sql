@@ -1,5 +1,5 @@
 -- Question 1
-SELECT *
+SELECT * -- could ALSO use count(*) TO give the count OF how many OF them.
 FROM actor
 WHERE last_name = 'Wahlberg';
 -- Answer: 2 (Nick and Daryl Wahlberg)
@@ -8,25 +8,16 @@ WHERE last_name = 'Wahlberg';
 -- Question 2
 SELECT count(amount) -- OR count(*) gives same result
 FROM payment
-WHERE amount BETWEEN 3.99 AND 5.99;
+WHERE amount BETWEEN 3.99 AND 5.99; -- amount >= 3.99 AND amount <= 5.99 - same
 --Answer: 5,607
 
 
 --Question 3
-SELECT *
+SELECT film_id, count(*)
 FROM inventory
-WHERE inventory.film_id  = '7';
--- 32 - 36
-SELECT *
-FROM film
-WHERE film_id BETWEEN 32 AND 36;
--- Answer:
--- id:	title: 
--- 32	Apocalypse Flamingos
--- 33	Apollo Teen
--- 34	Arabia Dogma
--- 35	Arachnophobia Rollercoaster
--- 36	Argonauts Town
+GROUP BY film_id 
+HAVING count(*) = 7; 
+--Answer: see table
 
 
 -- Question 4
@@ -37,13 +28,13 @@ WHERE first_name = 'Willie';
 
 
 -- Question 5
-SELECT staff_id, sum(rental_id)
+SELECT staff_id, count(rental_id) 
 FROM rental
 GROUP BY staff_id 
-ORDER BY sum(rental_id) DESC;
--- Answer:
--- 1	64,772,289
--- 2	63,986,771
+ORDER BY count(rental_id)  DESC;
+-- Answer: 1
+-- 1	8040
+
 
 
 -- Question 6
@@ -53,9 +44,11 @@ FROM address;
 
 
 -- Question 7
-SELECT max(film_id) 
-FROM film_actor;
--- Answer: 1,000
+SELECT film_id, count(*)  
+FROM film_actor
+GROUP BY film_id
+ORDER BY count(actor_id) DESC;
+-- Answer: Film ID 508
 
 
 -- Question 8
@@ -71,7 +64,7 @@ FROM payment
 WHERE customer_id BETWEEN 380 AND 430
 GROUP BY amount 
 HAVING count(*) > 250; 
--- answer:
+-- answer: 3 payments - 2.99, 4.99 and 0.99
 --2.99	290
 --4.99	281
 --0.99	269
@@ -80,12 +73,19 @@ HAVING count(*) > 250;
 
 
 -- Question 10
-SELECT count(DISTINCT rating) 
-FROM film;
+SELECT rating, count(*)
+FROM film
+GROUP BY rating 
+ORDER BY count(*) DESC;
+-- Answer: 5 categories, PG-13 with the most
+
+
+--SELECT count(DISTINCT rating) 
+--FROM film;
 -- answer: 5
 
-SELECT max(DISTINCT rating) 
-FROM film;
+--SELECT max(DISTINCT rating) -> wrong answer!
+--FROM film;
 -- answer: NC-17
 
 
